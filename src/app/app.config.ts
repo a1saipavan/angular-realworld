@@ -1,4 +1,10 @@
-import { ApplicationConfig, inject, provideAppInitializer, provideZonelessChangeDetection } from '@angular/core';
+import {
+  ApplicationConfig,
+  inject,
+  isDevMode,
+  provideAppInitializer,
+  provideZonelessChangeDetection,
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -55,7 +61,9 @@ function setupDebugInterface(jwtService: JwtService, userService: UserService): 
  */
 export function initAuth(jwtService: JwtService, userService: UserService) {
   return () => {
-    setupDebugInterface(jwtService, userService);
+    if (isDevMode()) {
+      setupDebugInterface(jwtService, userService);
+    }
 
     if (jwtService.getToken()) {
       return userService.getCurrentUser();
