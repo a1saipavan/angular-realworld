@@ -53,9 +53,9 @@ describe('JwtService', () => {
       expect(token).toBe(mockToken);
     });
 
-    it('should return undefined when no token exists', () => {
+    it('should return null when no token exists', () => {
       const token = service.getToken();
-      expect(token).toBeUndefined();
+      expect(token).toBeNull();
     });
 
     it('should handle empty string token', () => {
@@ -168,7 +168,7 @@ describe('JwtService', () => {
       service.destroyToken();
       delete localStorageSpy['jwtToken'];
       const token = service.getToken();
-      expect(token).toBeUndefined();
+      expect(token).toBeNull();
     });
 
     it('should be idempotent', () => {
@@ -305,7 +305,7 @@ describe('JwtService', () => {
       // User logs out
       service.destroyToken();
       delete localStorageSpy['jwtToken'];
-      expect(service.getToken()).toBeUndefined();
+      expect(service.getToken()).toBeNull();
     });
 
     it('should support session management', () => {
