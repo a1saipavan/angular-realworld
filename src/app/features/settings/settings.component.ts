@@ -15,6 +15,8 @@ interface SettingsForm {
   password: FormControl<string>;
 }
 
+const STRONG_PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])\S{8,}$/;
+
 @Component({
   selector: 'app-settings-page',
   templateUrl: './settings.component.html',
@@ -27,9 +29,12 @@ export default class SettingsComponent implements OnInit {
     image: new FormControl('', { nonNullable: true }),
     username: new FormControl('', { nonNullable: true }),
     bio: new FormControl('', { nonNullable: true }),
-    email: new FormControl('', { nonNullable: true }),
+    email: new FormControl('', {
+      validators: [Validators.required, Validators.email],
+      nonNullable: true,
+    }),
     password: new FormControl('', {
-      validators: [Validators.required],
+      validators: [Validators.pattern(STRONG_PASSWORD_PATTERN)],
       nonNullable: true,
     }),
   });
@@ -58,6 +63,11 @@ export default class SettingsComponent implements OnInit {
   }
 
   submitForm() {
+    if (this.settingsForm.invalid) {
+      this.settingsForm.markAllAsTouched();
+      return;
+    }
+
     this.isSubmitting.set(true);
 
     const payload = { ...this.settingsForm.value };
