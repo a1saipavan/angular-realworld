@@ -108,6 +108,11 @@ export default class ArticleComponent implements OnInit {
     const article = this.article();
     if (!article) return;
 
+    if (this.isDeleting()) return;
+
+    const confirmed = window.confirm('Are you sure you want to delete this article?');
+    if (!confirmed) return;
+
     this.isDeleting.set(true);
 
     this.articleService
